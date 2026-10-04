@@ -12,8 +12,85 @@ import {
   PlusCircle, 
   ShieldCheck,
   Share2,
-  Check
+  Check,
+  ChevronDown,
+  GitCommit
 } from 'lucide-react';
+
+function TraceDrawer({ trace }) {
+  const [open, setOpen] = useState(false);
+  if (!trace) return null;
+
+  return (
+    <div className="trace-accordion">
+      <button 
+        type="button" 
+        onClick={() => setOpen(!open)} 
+        className="trace-toggle-btn"
+      >
+        <span className="flex items-center gap-1.5 font-semibold text-cyan-400">
+          <GitCommit size={14} />
+          <span>Why did we identify this?</span>
+        </span>
+        <ChevronDown size={16} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="trace-drawer-body">
+          <div className="trace-chain-visual">
+            <span className="chain-step">Trigger</span>
+            <span className="chain-arrow">→</span>
+            <span className="chain-step">Considered</span>
+            <span className="chain-arrow">→</span>
+            <span className="chain-step">Missing / Weak</span>
+            <span className="chain-arrow">→</span>
+            <span className="chain-step">Relevance</span>
+          </div>
+
+          <div className="trace-grid">
+            <div className="trace-item">
+              <span className="trace-label">Trigger (In Your Words):</span>
+              <p className="trace-value text-amber-200">"{trace.trigger}"</p>
+            </div>
+
+            {trace.considered_factor && (
+              <div className="trace-item">
+                <span className="trace-label">You Considered:</span>
+                <p className="trace-value text-slate-300">{trace.considered_factor}</p>
+              </div>
+            )}
+
+            {trace.missing_or_weak_factor && (
+              <div className="trace-item">
+                <span className="trace-label">Potentially Missing / Weak:</span>
+                <p className="trace-value text-rose-300 font-medium">{trace.missing_or_weak_factor}</p>
+              </div>
+            )}
+
+            {trace.first_reasoning_point && (
+              <div className="trace-item">
+                <span className="trace-label">Stated Priority A:</span>
+                <p className="trace-value text-purple-300">{trace.first_reasoning_point}</p>
+              </div>
+            )}
+
+            {trace.second_reasoning_point && (
+              <div className="trace-item">
+                <span className="trace-label">Tension Factor B:</span>
+                <p className="trace-value text-purple-300">{trace.second_reasoning_point}</p>
+              </div>
+            )}
+
+            <div className="trace-item col-span-full">
+              <span className="trace-label">Why It Matters to This Decision:</span>
+              <p className="trace-value text-cyan-200">{trace.why_relevant}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function AnalysisResult() {
   const { id } = useParams();
@@ -58,7 +135,7 @@ export function AnalysisResult() {
 
   const handleCopy = () => {
     if (!audit) return;
-    const text = `BLINDSPOT AI AUDIT SUMMARY
+    const text = `MIN沿着LENS (BLINDSPOT AI) AUDIT SUMMARY
 DECISION: ${audit.decision}
 REASONING: ${audit.reasoning}
 
@@ -171,6 +248,7 @@ ${audit.analysis?.critical_questions?.map(q => `- ${q}`).join('\n')}
                   <p className="why-it-matters">
                     <strong>Why it matters:</strong> {item.why_it_matters}
                   </p>
+                  <TraceDrawer trace={item.trace} />
                 </div>
               ))
             ) : (
@@ -200,6 +278,7 @@ ${audit.analysis?.critical_questions?.map(q => `- ${q}`).join('\n')}
                   <p className="evidence-note">
                     <strong>Based on:</strong> {item.evidence}
                   </p>
+                  <TraceDrawer trace={item.trace} />
                 </div>
               ))
             ) : (
@@ -254,6 +333,7 @@ ${audit.analysis?.critical_questions?.map(q => `- ${q}`).join('\n')}
                   <div className="conflict-question-box">
                     <strong>Question to evaluate:</strong> {item.question}
                   </div>
+                  <TraceDrawer trace={item.trace} />
                 </div>
               ))
             ) : (

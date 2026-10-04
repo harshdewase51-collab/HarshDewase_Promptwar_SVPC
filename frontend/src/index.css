@@ -1123,3 +1123,107 @@ textarea:focus, input:focus {
   .form-submit-row { flex-direction: column; align-items: stretch; }
   .btn-audit-submit { width: 100%; }
 }
+
+/* ==================================================
+   TRACEABLE REASONING STYLES
+   ================================================== */
+.trace-accordion {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-color);
+}
+
+.trace-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.825rem;
+  cursor: pointer;
+  padding: 0.35rem 0.25rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.trace-toggle-btn:hover {
+  background: rgba(6, 182, 212, 0.08);
+}
+
+.trace-drawer-body {
+  margin-top: 0.65rem;
+  background: rgba(10, 13, 20, 0.95);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.trace-chain-visual {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+}
+
+.chain-step {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.chain-arrow {
+  color: var(--accent-cyan);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.trace-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.trace-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.75rem;
+}
+
+.trace-item.col-span-full {
+  grid-column: 1 / -1;
+  background: rgba(6, 182, 212, 0.04);
+  border-color: rgba(6, 182, 212, 0.15);
+}
+
+.trace-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 0.25rem;
+}
+
+.trace-value {
+  font-size: 0.825rem;
+  line-height: 1.4;
+}
+
