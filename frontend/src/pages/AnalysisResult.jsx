@@ -30,7 +30,7 @@ function TraceDrawer({ trace }) {
       >
         <span className="flex items-center gap-1.5 font-semibold text-cyan-400">
           <GitCommit size={14} />
-          <span>Why did we identify this?</span>
+          <span>Why did we identify this? (Why Detected)</span>
         </span>
         <ChevronDown size={16} className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
       </button>

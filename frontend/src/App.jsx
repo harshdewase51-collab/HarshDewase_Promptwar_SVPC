@@ -24,11 +24,11 @@ function LandingPage() {
           <span>The Blind Spot Hackathon Solution</span>
         </div>
         <h1 className="hero-heading">
-          We don't make the decision for you.<br />
-          <span className="text-gradient">We audit the reasoning behind it.</span>
+          AI that audits your thinking —<br />
+          <span className="text-gradient">not your decision.</span>
         </h1>
         <p className="hero-subheading">
-          MindLens is an objective, non-prescriptive AI mirror. Before you commit to a high-stakes internship, career move, or major purchase, uncover evidence-linked blind spots and unexamined assumptions in your logic.
+          BlindSpot AI (MindLens) is an objective, non-prescriptive reasoning mirror. Before you commit to a high-stakes internship, career move, or major purchase, uncover evidence-linked blind spots and unexamined assumptions in your logic.
         </p>
 
         <div className="hero-cta-group">

@@ -1,4 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const PROD_API_URL = 'https://harsh-dewase-promptwar-svpc-cx73.vercel.app/api/v1';
+const rawUrl = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = (import.meta.env.PROD && (!rawUrl || rawUrl.includes('localhost') || rawUrl.includes('127.0.0.1')))
+  ? PROD_API_URL
+  : (rawUrl || 'http://localhost:8000/api/v1');
 
 async function request(endpoint, { method = 'GET', data = null, headers = {} } = {}) {
   const token = localStorage.getItem('blindspot_token');
