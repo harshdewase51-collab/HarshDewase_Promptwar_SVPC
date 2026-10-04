@@ -93,12 +93,10 @@ Analyze the logic and return the structured JSON audit with traceable reasoning 
 
         # Try remote LLM if key is configured
         if settings.AI_API_KEY and settings.AI_API_KEY.strip():
-            try:
-                result = await AIService._call_remote_llm(user_prompt)
-                if result:
-                    return result
-            except Exception as e:
-                logger.warning(f"Remote LLM call failed, switching to grounded fallback: {e}")
+            result = await AIService._call_remote_llm(user_prompt)
+            if result:
+                return result
+            raise RuntimeError("Remote AI provider returned empty result")
 
         # Intelligent grounded heuristic fallback with full traceability
         return AIService._grounded_fallback_audit(decision, context, reasoning)
@@ -138,8 +136,8 @@ Analyze the logic and return the structured JSON audit with traceable reasoning 
                 content = data["choices"][0]["message"]["content"]
                 return json.loads(content)
             else:
-                logger.warning(f"LLM API returned status {response.status_code}: {response.text}")
-                return None
+                logger.error(f"Remote LLM provider ({provider}) returned error status {response.status_code}")
+                raise RuntimeError(f"Remote AI provider error: status {response.status_code}")
 
     @staticmethod
     def _grounded_fallback_audit(decision: str, context: Optional[str], reasoning: str) -> Dict[str, Any]:
@@ -154,8 +152,8 @@ Analyze the logic and return the structured JSON audit with traceable reasoning 
         missing_factors = []
         critical_questions = []
 
-        # 1. Domain: Internship / Career / Job
-        if any(w in text for w in ["intern", "internship", "job", "career", "salary", "stipend", "promotion", "company"]):
+        # 1. Domain: Internship
+        if "intern" in text or "internship" in text:
             if "mentor" not in text:
                 blind_spots.append({
                     "finding": "Mentorship and guidance structure were not considered in your evaluation.",
@@ -259,6 +257,57 @@ Analyze the logic and return the structured JSON audit with traceable reasoning 
                 "Does this model have known thermal or hardware issues documented in recent user forums?",
                 "What is the total cost including essential accessories, adapters, and protection plans?",
                 "Will your computing needs expand before the expected lifespan of this device concludes?"
+            ])
+
+        # 3. Domain: Career Choice (Startup vs Corporate / Role Switch)
+        elif any(w in text for w in ["startup", "corporate", "big tech", "equity", "career", "job", "offer", "promotion", "switch", "founder"]):
+            blind_spots.append({
+                "finding": "Startup runway risk and equity illiquidity were not factored into your financial reasoning.",
+                "evidence": "You cited rapid career growth and high equity upside, but did not analyze company cash reserves or vesting terms.",
+                "why_it_matters": "Early-stage startup equity has a high probability of expiring worthless, meaning base salary risk cannot be ignored.",
+                "trace": {
+                    "trigger": "You assumed startup equity and rapid responsibility would outpace a stable corporate trajectory.",
+                    "considered_factor": "Accelerated leadership scope and equity ownership",
+                    "missing_or_weak_factor": "Startup runway (months of cash left), dilution risk, and liquidation preference",
+                    "why_relevant": "If the startup runs out of cash in 12 months, the assumed equity upside becomes zero while you sacrifice market-rate salary."
+                }
+            })
+            assumptions.append({
+                "assumption": "The breadth of responsibility in a startup will be valued more by future employers than deep domain expertise at a recognized tech company.",
+                "evidence": f"You noted: '{reasoning[:80]}...'",
+                "needs_verification": True,
+                "trace": {
+                    "trigger": "You stated that startup speed and responsibility will advance your career faster.",
+                    "considered_factor": "Rapid skill diversification and title seniority",
+                    "missing_or_weak_factor": "Employer perception of unproven engineering standards or chaotic team practices",
+                    "why_relevant": "Some senior roles require experience operating at scale, which 5-person startups cannot provide."
+                },
+                "verification": "Speak to 2 engineering managers at growth-stage companies to ask how they evaluate early startup vs big tech backgrounds."
+            })
+            verifications.append({
+                "assumption": "The breadth of responsibility in a startup will be valued more by future employers than deep domain expertise at a recognized tech company.",
+                "verification": "Speak to 2 engineering managers at growth-stage companies to ask how they evaluate early startup vs big tech backgrounds."
+            })
+            missing_factors.extend([
+                "Company financial runway and next funding milestones",
+                "Equity vesting schedule, cliff, and 83(b) tax implications",
+                "Work-life balance sustainability and on-call demands on a 5-person team"
+            ])
+            potential_conflicts.append({
+                "conflict": "There appears to be a possible tension between financial certainty and equity upside speculation.",
+                "evidence": "You are trading a high, liquid base salary for illiquid startup shares.",
+                "question": "Could you comfortably sustain your current living expenses if the startup fails to raise a follow-on round in 12 months?",
+                "trace": {
+                    "trigger": "You contrasted the corporate salary with the startup's potential upside.",
+                    "first_reasoning_point": "Immediate financial security and market compensation",
+                    "second_reasoning_point": "High-risk speculative upside in an unproven business",
+                    "why_relevant": "Sacrificing guaranteed cash for illiquid equity creates vulnerability if market conditions tighten."
+                }
+            })
+            critical_questions.extend([
+                "What is the company's verified cash runway in months, and what are their revenue milestones?",
+                "Are the founders experienced second-time entrepreneurs or first-time operators?",
+                "What will your exact day-to-day role look like if the company pivots in 6 months?"
             ])
 
         # 3. General Decision Domain
