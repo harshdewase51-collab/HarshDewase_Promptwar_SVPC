@@ -42,8 +42,10 @@ export function Login() {
           <div className="auth-icon-badge">
             <Compass size={28} className="text-cyan-400" />
           </div>
-          <h2>Welcome Back</h2>
-          <p>Sign in to audit your reasoning and view decision history</p>
+          <span className="auth-brand-name">BLINDSPOT</span>
+          <h2>Sign In to BlindSpot</h2>
+          <p className="auth-tagline">“Challenge your reasoning. Own your decision.”</p>
+          <p className="auth-subtitle">AI that audits your thinking — not your decision.</p>
         </div>
 
         {error && (

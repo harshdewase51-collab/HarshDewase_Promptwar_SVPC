@@ -135,7 +135,7 @@ export function AnalysisResult() {
 
   const handleCopy = () => {
     if (!audit) return;
-    const text = `MIN沿着LENS (BLINDSPOT AI) AUDIT SUMMARY
+    const text = `BLINDSPOT AI AUDIT SUMMARY
 DECISION: ${audit.decision}
 REASONING: ${audit.reasoning}
 
@@ -395,8 +395,8 @@ ${audit.analysis?.critical_questions?.map(q => `- ${q}`).join('\n')}
         <div>
           <h2 className="banner-title">NOW YOU DECIDE.</h2>
           <p className="banner-text">
-            MindLens audits the reasoning behind your decision, uncovering blind spots and testing assumptions. 
-            We never tell you what to choose—the final decision and ownership always belongs to you.
+            BlindSpot AI doesn't tell you what decision to make. It examines your reasoning before you commit.
+            The final decision and ownership always belongs to you.
           </p>
         </div>
         <Link to="/new-decision" className="btn-primary-large">

@@ -40,8 +40,10 @@ export function Register() {
           <div className="auth-icon-badge">
             <Compass size={28} className="text-cyan-400" />
           </div>
+          <span className="auth-brand-name">BLINDSPOT</span>
           <h2>Create Your Account</h2>
-          <p>Start auditing blind spots in your important decisions</p>
+          <p className="auth-tagline">“Challenge your reasoning. Own your decision.”</p>
+          <p className="auth-subtitle">AI that audits your thinking — not your decision.</p>
         </div>
 
         {error && (

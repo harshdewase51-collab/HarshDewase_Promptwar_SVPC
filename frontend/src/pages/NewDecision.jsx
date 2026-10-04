@@ -121,7 +121,7 @@ export function NewDecision() {
       <form onSubmit={handleSubmit} className="audit-form-card">
         <div className="form-field">
           <div className="field-header">
-            <label htmlFor="decision">1. What is the decision you are considering?</label>
+            <label htmlFor="decision">What decision are you considering?</label>
             <span className="field-badge required">Required</span>
           </div>
           <p className="field-hint">State the concrete action or choice being evaluated.</p>
@@ -137,7 +137,7 @@ export function NewDecision() {
 
         <div className="form-field">
           <div className="field-header">
-            <label htmlFor="context">2. Context & Constraints (Optional)</label>
+            <label htmlFor="context">Context & Constraints</label>
             <span className="field-badge optional">Optional</span>
           </div>
           <p className="field-hint">Background situation, timeline, financial constraints, team size, stakes.</p>
@@ -152,7 +152,7 @@ export function NewDecision() {
 
         <div className="form-field">
           <div className="field-header">
-            <label htmlFor="reasoning">3. What is your reasoning?</label>
+            <label htmlFor="reasoning">My Reasoning</label>
             <span className="field-badge required">Required</span>
           </div>
           <p className="field-hint">Why do you believe this is the right move? What assumptions are you relying on?</p>
