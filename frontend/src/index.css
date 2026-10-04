@@ -1212,6 +1212,26 @@ textarea:focus, input:focus {
   color: #dc2626;
 }
 
+.auth-alert-link {
+  color: #fda4af;
+  text-decoration: underline;
+  font-weight: 600;
+  margin-left: 0.2rem;
+  transition: color 0.15s;
+}
+
+.auth-alert-link:hover {
+  color: #ffffff;
+}
+
+[data-theme="light"] .auth-alert-link {
+  color: #b91c1c;
+}
+
+[data-theme="light"] .auth-alert-link:hover {
+  color: #7f1d1d;
+}
+
 /* Inputs with Icons */
 .input-with-icon-wrapper {
   position: relative;
